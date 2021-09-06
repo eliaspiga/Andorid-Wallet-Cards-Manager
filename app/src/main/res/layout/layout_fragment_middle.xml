@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:elevation="30dp"
+    app:cardCornerRadius="8dp">
+
+    <View
+        android:id="@+id/middleHorizontalMarginRefer"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:visibility="invisible" />
+
+    <FrameLayout
+        android:id="@+id/middle_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="@color/design_default_color_primary_dark"
+        android:visibility="visible">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top|center_horizontal"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/middle_fragment_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="20dp"
+                android:text="THIS\nIS\nTHE"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="75dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|center_horizontal"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/dragCardContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="24dp"
+                    android:paddingBottom="20dp"
+                    app:cardCornerRadius="8dp">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/white"
+                        android:paddingBottom="10dp">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/middle_fragment_header_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:maxLines="1"
+                            android:padding="20dp"
+                            android:text="MIDDLE"
+                            android:textColor="@android:color/black"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                    </FrameLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</com.google.android.material.card.MaterialCardView>

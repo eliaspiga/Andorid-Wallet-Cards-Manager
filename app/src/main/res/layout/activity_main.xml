@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/backContainerFragment"
+        android:name="com.overapp.cardlayout.cardsfragments.BackFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/middleDragLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <View
+                android:id="@+id/middle_shadow"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:background="@drawable/card_shadow"
+                android:translationY="15dp" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/middleContainerFragment"
+            android:name="com.overapp.cardlayout.cardsfragments.MiddleFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frontDragLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+        <View
+            android:id="@+id/front_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:background="@drawable/card_shadow"
+            android:translationY="15dp" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/frontContainerFragment"
+            android:name="com.overapp.cardlayout.cardsfragments.FrontFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

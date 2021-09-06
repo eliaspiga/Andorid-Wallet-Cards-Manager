@@ -1,0 +1,3 @@
+rootProject.name = "CardLayout"
+include ':app'
+include ':WalletCardsManager'
