@@ -242,8 +242,8 @@ object CardsManager {
     //region private methods
     private fun initialSetup() {
 
-        if (rootHeight != 0 || backBorderHeight != 0 || middleCardBorderHeight != 0
-            || frontCardBorderHeight != 0 || middleShadow != 0 || frontShadow != 0
+        if (rootHeight == 0 || backBorderHeight == 0 || middleCardBorderHeight == 0
+            || frontCardBorderHeight == 0 || middleShadow == 0 || frontShadow == 0
         ) return
 
         //calcs for the upper margins
@@ -310,15 +310,6 @@ object CardsManager {
             middleCardActualPosition = middleCardTopLimitSwitch
             frontCardActualPosition = frontCardTopLimitSwitch
         }
-    }
-
-    fun closeAll() {
-        //send the go signal at the cards
-        mainControll.frontCardGoAnimated(frontCardActualPosition, frontCardTopLimitSwitch)
-        mainControll.middleCardGoAnimated(middleCardActualPosition, middleCardTopLimitSwitch)
-        //set the new position of the cards
-        frontCardActualPosition = frontCardTopLimitSwitch
-        middleCardActualPosition = middleCardTopLimitSwitch
     }
     //endregion
 
