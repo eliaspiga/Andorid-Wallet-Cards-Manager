@@ -56,12 +56,12 @@ class MiddleFragment : Fragment(), CardsManager.MiddleInterfaceListener {
 
         //calculates margins
         val topMargin: Int = (backgroundViewHeight * ratio).toInt()
-        val borderMargin: Int = (horizontalMarginRefer * ratio).toInt()
+        val horizontalMargin: Int = (horizontalMarginRefer * ratio).toInt()
 
         //assign margins params to the view
         val contentParams =
             binding.dragCardContent.layoutParams as FrameLayout.LayoutParams
-        contentParams.setMargins(borderMargin, topMargin, borderMargin, contentParams.bottomMargin)
+        contentParams.setMargins(horizontalMargin, topMargin, horizontalMargin, contentParams.bottomMargin)
         binding.dragCardContent.layoutParams = contentParams
 
         //update the font size

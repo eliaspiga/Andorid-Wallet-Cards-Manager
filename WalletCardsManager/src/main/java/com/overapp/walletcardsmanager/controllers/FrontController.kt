@@ -1,7 +1,6 @@
 package com.overapp.walletcardsmanager.controllers
 
 import android.animation.ValueAnimator
-import android.annotation.SuppressLint
 import android.util.Log
 import android.view.MotionEvent
 import android.view.VelocityTracker
@@ -18,7 +17,7 @@ class FrontController(val scrollLayout: View, val topMargin: Int, val bottomMarg
     private var initialY = 0
     private var lastReadedY = 0
     private var lastRootY = 0
-    private var lastVelocity = 0f
+    private var lastV = 0f
 
     private var direction = Direction.DOWN
 
@@ -43,7 +42,6 @@ class FrontController(val scrollLayout: View, val topMargin: Int, val bottomMarg
 
     //region motion
     private fun setupFrontTouchListener() = object : View.OnTouchListener {
-        @SuppressLint("BinaryOperationInTimber", "ClickableViewAccessibility")
         override fun onTouch(view: View, event: MotionEvent): Boolean {
 
             when (event.action) {
@@ -93,14 +91,14 @@ class FrontController(val scrollLayout: View, val topMargin: Int, val bottomMarg
                         computeCurrentVelocity(1000)
 
                         //get the last velocity also taking into account the x param = (Vyˆ2 + Vxˆ2)ˆ(1/2)
-                        val xV = this.getXVelocity(pointerId).pow(2)
-                        val yV = this.getYVelocity(pointerId).pow(2)
-                        lastVelocity = sqrt((xV + yV).toDouble()).toFloat()
+                        val vx = this.getXVelocity(pointerId).pow(2)
+                        val vy = this.getYVelocity(pointerId).pow(2)
+                        lastV = sqrt((vx + vy).toDouble()).toFloat()
                     }
                 }
                 MotionEvent.ACTION_UP -> {
                     //manage motion by velocity
-                    if (abs(lastVelocity) > 1800) {
+                    if (abs(lastV) > 1800) {
                         //compare actualY with lastY to get the direciton of the drag
                         if (initialY < event.rawY.toInt()) {
                             goDown()
@@ -143,9 +141,6 @@ class FrontController(val scrollLayout: View, val topMargin: Int, val bottomMarg
 
     //function called when card go up
     private fun goUp() {
-
-        Log.d("CONTROLLER", "Front controller -> goUp : $lastRootY -> $topMargin")
-
         //autodrag to go up
         autoDragCardLayout(lastRootY.toFloat(), topMargin.toFloat())
         //set lastY
@@ -157,6 +152,7 @@ class FrontController(val scrollLayout: View, val topMargin: Int, val bottomMarg
     }
 
     //region private methods
+    //autodrag the card with animation
     private fun autoDragCardLayout(from: Float, to: Float) {
         val va = ValueAnimator.ofFloat(from, to)
         val mDuration = 250 //in millis

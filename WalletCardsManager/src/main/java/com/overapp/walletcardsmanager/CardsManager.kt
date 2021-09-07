@@ -1,7 +1,5 @@
 package com.overapp.walletcardsmanager
 
-import android.util.Log
-
 object CardsManager {
 
     const val tagLog = "CARDS_MANAGER"
@@ -69,34 +67,32 @@ object CardsManager {
 
     //region methods set limit switch
     fun setBackBorder(value: Int) {
-        backBorderHeight = value.also { Log.d(tagLog, "BackBorder : $it") }
+        backBorderHeight = value
         initialSetup()
     }
 
     fun setMiddleCardBorder(value: Int) {
-        middleCardBorderHeight =
-            value.also { Log.d(tagLog, "MiddleBorder : $it") }
+        middleCardBorderHeight = value
         initialSetup()
     }
 
     fun setFrontCardBorder(value: Int) {
-        frontCardBorderHeight =
-            value.also { Log.d(tagLog, "FrontBorder : $it") }
+        frontCardBorderHeight = value
         initialSetup()
     }
 
     fun setRootHeight(value: Int) {
-        rootHeight = value.also { Log.d(tagLog, "RootHeight : $it") }
+        rootHeight = value
         initialSetup()
     }
 
     fun setMiddleShadowHeight(value: Int) {
-        middleShadow = value.also { Log.d(tagLog, "Middle Shadow : $it") }
+        middleShadow = value
         initialSetup()
     }
 
     fun setFrontShadowHeight(value: Int) {
-        frontShadow = value.also { Log.d(tagLog, "Front Shadow : $it") }
+        frontShadow = value
         initialSetup()
     }
     //endregion
@@ -239,6 +235,40 @@ object CardsManager {
     //endregion
 
 
+    //region Back
+    fun changeBackOpenStatus() {
+        backControll.onOpenStatusChanged(
+            middleCardActualPosition == middleCardLowerLimitSwitch
+                    && frontCardActualPosition == frontCardLowerLimitSwitch
+        )
+    }
+    //endregion
+
+
+    //region methods event - command
+    fun onBackHeaderClicked(openStatus: Boolean) {
+        //send the positions
+        if (openStatus) {
+            //go down
+            //send the go signal at the cards
+            mainControll.frontCardGoAnimated(frontCardActualPosition, frontCardLowerLimitSwitch)
+            mainControll.middleCardGoAnimated(middleCardActualPosition, middleCardLowerLimitSwitch)
+            //set the new position of the cards
+            frontCardActualPosition = frontCardLowerLimitSwitch
+            middleCardActualPosition = middleCardLowerLimitSwitch
+        } else {
+            //go up
+            //send the go signal at the cards
+            mainControll.middleCardGoAnimated(middleCardActualPosition, middleCardTopLimitSwitch)
+            mainControll.frontCardGoAnimated(frontCardActualPosition, frontCardTopLimitSwitch)
+            //set the new position of the cards
+            middleCardActualPosition = middleCardTopLimitSwitch
+            frontCardActualPosition = frontCardTopLimitSwitch
+        }
+    }
+    //endregion
+
+
     //region private methods
     private fun initialSetup() {
 
@@ -277,46 +307,9 @@ object CardsManager {
         //notify finisched setup
         mainControll.finishedSetup()
     }
-    //region
 
-
-    //region Back
-    fun changeBackOpenStatus() {
-        backControll.onOpenStatusChanged(
-            middleCardActualPosition == middleCardLowerLimitSwitch
-                    && frontCardActualPosition == frontCardLowerLimitSwitch
-        )
-    }
-    //endregion
-
-
-    //region methods event - command
-    fun onBackHeaderClicked(openStatus: Boolean) {
-        //send the positions
-        if (openStatus) {
-            //go down
-            //send the go signal at the cards
-            mainControll.frontCardGoAnimated(frontCardActualPosition, frontCardLowerLimitSwitch)
-            mainControll.middleCardGoAnimated(middleCardActualPosition, middleCardLowerLimitSwitch)
-            //set the new position of the cards
-            frontCardActualPosition = frontCardLowerLimitSwitch
-            middleCardActualPosition = middleCardLowerLimitSwitch
-        } else {
-            //go up
-            //send the go signal at the cards
-            mainControll.middleCardGoAnimated(middleCardActualPosition, middleCardTopLimitSwitch)
-            mainControll.frontCardGoAnimated(frontCardActualPosition, frontCardTopLimitSwitch)
-            //set the new position of the cards
-            middleCardActualPosition = middleCardTopLimitSwitch
-            frontCardActualPosition = frontCardTopLimitSwitch
-        }
-    }
-    //endregion
-
-
-    //region private methods
     private fun updateOpenRatioValue() {
         middleControll.onCardsChangeOpenRatio(actualOpenRatio)
     }
-    //endregion
+    //region
 }
