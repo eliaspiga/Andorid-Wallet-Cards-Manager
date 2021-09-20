@@ -41,7 +41,8 @@ class MainActivity : AppCompatActivity(), CardsManager.MainInterfaceListener {
     //region middle card commands
     override fun initialSetupMiddleCard(
         middleCardStartMargin: Int,
-        middleCardTopLimitSwitch: Int, middleCardLowerLimitSwitch: Int
+        middleCardTopLimitSwitch: Float,
+        middleCardLowerLimitSwitch: Float
     ) {
         //setup middle card border
         val newLayoutParams = binding.middleDragLayout.layoutParams as ConstraintLayout.LayoutParams
@@ -56,11 +57,11 @@ class MainActivity : AppCompatActivity(), CardsManager.MainInterfaceListener {
         )
     }
 
-    override fun middleCardGoAnimated(from: Int, to: Int) {
+    override fun middleCardGoAnimated(from: Float, to: Float) {
         middleController.goAnimated(from, to)
     }
 
-    override fun middleCardGo(to: Int) {
+    override fun middleCardGo(to: Float) {
         middleController.go(to)
     }
     //endregion
@@ -69,7 +70,7 @@ class MainActivity : AppCompatActivity(), CardsManager.MainInterfaceListener {
     //region front card commands
     override fun initialSetupFrontCard(
         frontCardStartMargin: Int,
-        frontCardTopLimitSwitch: Int, frontCardLowerLimitSwitch: Int
+        frontCardTopLimitSwitch: Float, frontCardLowerLimitSwitch: Float
     ) {
         //setup front card border
         val newLayoutParams = binding.frontDragLayout.layoutParams as ConstraintLayout.LayoutParams
@@ -84,11 +85,11 @@ class MainActivity : AppCompatActivity(), CardsManager.MainInterfaceListener {
         )
     }
 
-    override fun frontCardGoAnimated(from: Int, to: Int) {
+    override fun frontCardGoAnimated(from: Float, to: Float) {
         frontController.goAnimated(from, to)
     }
 
-    override fun frontCardGo(to: Int) {
+    override fun frontCardGo(to: Float) {
         frontController.go(to)
     }
     //endregion

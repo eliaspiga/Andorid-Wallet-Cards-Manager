@@ -11,13 +11,13 @@ import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class MiddleController(val scrollLayout: View, val topMargin: Int, val bottomMargin: Int) {
+class MiddleController(val scrollLayout: View, val topMargin: Float, val bottomMargin: Float) {
 
     //region drag variables
-    private var initialY = 0
-    private var lastY = 0
-    private var lastCardY = 0
-    private var lastVelocity = 0f
+    private var initialY: Float = 0f
+    private var lastY:Float = 0f
+    private var lastCardY:Float = 0f
+    private var lastVelocity:Float = 0f
     private var direction = Direction.DOWN
 
     private var velocityTracker: VelocityTracker? = null
@@ -30,12 +30,12 @@ class MiddleController(val scrollLayout: View, val topMargin: Int, val bottomMar
     }
 
     //region public methods
-    fun goAnimated(from: Int, to: Int) {
-        autoDrag(from.toFloat(), to.toFloat())
+    fun goAnimated(from: Float, to: Float) {
+        autoDrag(from, to)
     }
 
-    fun go(to: Int) {
-        scrollLayout.translationY = to.toFloat()
+    fun go(to: Float) {
+        scrollLayout.translationY = to
     }
     //endregion
 
@@ -49,7 +49,7 @@ class MiddleController(val scrollLayout: View, val topMargin: Int, val bottomMar
 
                 MotionEvent.ACTION_DOWN -> {
 
-                    lastY = event.rawY.toInt()
+                    lastY = event.rawY
                     initialY = lastY
 
                     if (velocityTracker == null)
@@ -60,13 +60,14 @@ class MiddleController(val scrollLayout: View, val topMargin: Int, val bottomMar
 
                 MotionEvent.ACTION_MOVE -> {
 
-                    val actualRawY = event.rawY.toInt()
-                    val deltaY = actualRawY - lastY
-                    val positionResult = scrollLayout.translationY + deltaY
+                    val actualRawY : Float = event.rawY
+                    val deltaY : Float = actualRawY - lastY
+                    lastY = actualRawY
+                    val positionResult : Float = scrollLayout.translationY + deltaY
 
-                    if (positionResult.toInt() in topMargin..bottomMargin) {
+                    if (positionResult in topMargin..bottomMargin) {
 
-                        direction = if (deltaY >= 0) {
+                        direction = if (deltaY >= 0f) {
                             //going down
                             CardsManager.onMiddleCardDown(deltaY)
                             Direction.DOWN
@@ -82,8 +83,7 @@ class MiddleController(val scrollLayout: View, val topMargin: Int, val bottomMar
                         }
 
                         scrollLayout.translationY += deltaY
-                        lastY = actualRawY
-                        lastCardY = scrollLayout.translationY.toInt()
+                        lastCardY = scrollLayout.translationY
                         CardsManager.setMiddleCardPosition(lastCardY)
                     }
 
@@ -101,9 +101,9 @@ class MiddleController(val scrollLayout: View, val topMargin: Int, val bottomMar
                 }
                 MotionEvent.ACTION_UP -> {
                     //manage motion by velocity
-                    if (abs(lastVelocity) > 1800) {
+                    if (abs(lastVelocity) > 1800f) {
                         //compare actualY with lastY to get the direciton of the drag
-                        if (initialY < event.rawY.toInt()) {
+                        if (initialY < event.rawY) {
                             goDown()
                         } else {
                             goUp()
@@ -133,7 +133,7 @@ class MiddleController(val scrollLayout: View, val topMargin: Int, val bottomMar
     //function called when the card go down
     private fun goDown() {
         //autodrag to go down
-        autoDrag(lastCardY.toFloat(), bottomMargin.toFloat())
+        autoDrag(lastCardY, bottomMargin)
         //update lastY
         lastY = bottomMargin
         //notify o MiddleCard opened
@@ -145,7 +145,7 @@ class MiddleController(val scrollLayout: View, val topMargin: Int, val bottomMar
     //function called when the card go up
     private fun goUp() {
         //autodrag to go up
-        autoDrag(lastCardY.toFloat(), topMargin.toFloat())
+        autoDrag(lastCardY, topMargin)
         //set the lastY
         lastY = topMargin
         //notify on MiddleCard close
@@ -160,9 +160,9 @@ class MiddleController(val scrollLayout: View, val topMargin: Int, val bottomMar
 
         va.duration = mDuration.toLong()
         va.addUpdateListener { animation ->
-            val value = (animation.animatedValue as Float).toInt()
+            val value = (animation.animatedValue as Float)
             CardsManager.setMiddleCardPosition(value)
-            scrollLayout.translationY = value.toFloat()
+            scrollLayout.translationY = value
         }
         va.start()
     }

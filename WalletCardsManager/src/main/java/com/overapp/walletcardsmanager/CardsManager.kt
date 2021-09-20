@@ -27,23 +27,23 @@ object CardsManager {
 
     //region sigital card variables
     private var middleCardStartMargin: Int = 0
-    private var middleCardTopLimitSwitch: Int = 0
-    private var middleCardLowerLimitSwitch: Int = 0
-    private var middleCardActualPosition: Int = 0
+    private var middleCardTopLimitSwitch: Float = 0f
+    private var middleCardLowerLimitSwitch: Float = 0f
+    private var middleCardActualPosition: Float = 0f
     //endregion
 
     //region frontCard variables
     private var frontCardStartMargin: Int = 0
-    private var frontCardTopLimitSwitch: Int = 0
-    private var frontCardLowerLimitSwitch: Int = 0
-    private var frontCardActualPosition: Int = 0
+    private var frontCardTopLimitSwitch: Float = 0f
+    private var frontCardLowerLimitSwitch: Float = 0f
+    private var frontCardActualPosition: Float = 0f
     //endregion
 
     //region middle card - front card open ratio variation
-    private val middleFrontMaxDistance: Int
+    private val middleFrontMaxDistance: Float
         get() = (frontCardLowerLimitSwitch - middleCardTopLimitSwitch)
 
-    private val middleFrontActualDistance: Int
+    private val middleFrontActualDistance: Float
         get() = (frontCardActualPosition - middleCardActualPosition)
 
     private val actualOpenRatio: Float
@@ -104,24 +104,24 @@ object CardsManager {
         //frontCard initial setup
         fun initialSetupFrontCard(
             frontCardStartMargin: Int,
-            frontCardTopLimitSwitch: Int,
-            frontCardLowerLimitSwitch: Int,
+            frontCardTopLimitSwitch: Float,
+            frontCardLowerLimitSwitch: Float,
         )
 
         //frontCard motion
-        fun frontCardGoAnimated(from: Int, to: Int)
-        fun frontCardGo(to: Int)
+        fun frontCardGoAnimated(from: Float, to: Float)
+        fun frontCardGo(to: Float)
 
         //middle card initial setup
         fun initialSetupMiddleCard(
             middleCardStartMargin: Int,
-            middleCardTopLimitSwitch: Int,
-            middleCardLowerLimitSwitch: Int,
+            middleCardTopLimitSwitch: Float,
+            middleCardLowerLimitSwitch: Float,
         )
 
         //middle card motion
-        fun middleCardGoAnimated(from: Int, to: Int)
-        fun middleCardGo(to: Int)
+        fun middleCardGoAnimated(from: Float, to: Float)
+        fun middleCardGo(to: Float)
 
         fun finishedSetup()
     }
@@ -138,12 +138,12 @@ object CardsManager {
 
 
     //region update position methods
-    fun setMiddleCardPosition(value: Int) {
+    fun setMiddleCardPosition(value: Float) {
         middleCardActualPosition = value
         updateOpenRatioValue()
     }
 
-    fun setFrontCardPosition(value: Int) {
+    fun setFrontCardPosition(value: Float) {
         frontCardActualPosition = value
         updateOpenRatioValue()
     }
@@ -151,7 +151,7 @@ object CardsManager {
 
 
     //region movement methods
-    fun onMiddleCardDown(delta: Int) {
+    fun onMiddleCardDown(delta: Float) {
         val positionResult = frontCardActualPosition + delta
         if (positionResult <= frontCardLowerLimitSwitch) {
             mainControll.frontCardGo(positionResult)
@@ -159,7 +159,7 @@ object CardsManager {
         }
     }
 
-    fun onMiddleCardUp(delta: Int) {
+    fun onMiddleCardUp(delta: Float) {
         if (frontCardActualPosition != frontCardLowerLimitSwitch) {
             val positionResult = frontCardActualPosition + delta
             if (positionResult >= frontCardTopLimitSwitch) {
@@ -190,7 +190,7 @@ object CardsManager {
     }
 
 
-    fun onFrontCardDown(delta: Int) {
+    fun onFrontCardDown(delta: Float) {
         if (middleCardActualPosition != middleCardTopLimitSwitch) {
             val positionResult = middleCardActualPosition + delta
             if (positionResult <= middleCardLowerLimitSwitch) {
@@ -200,7 +200,7 @@ object CardsManager {
         }
     }
 
-    fun onFrontCardUp(delta: Int) {
+    fun onFrontCardUp(delta: Float) {
         val positionResult = middleCardActualPosition + delta
         if (positionResult >= middleCardTopLimitSwitch) {
             mainControll.middleCardGo(positionResult)
@@ -281,12 +281,12 @@ object CardsManager {
         frontCardStartMargin = middleCardStartMargin + middleCardBorderHeight
 
         //calcs for upper limit switches
-        middleCardTopLimitSwitch = 0
-        frontCardTopLimitSwitch = 0
+        middleCardTopLimitSwitch = 0f
+        frontCardTopLimitSwitch = 0f
 
         //calcs for the lower limit switches
         frontCardLowerLimitSwitch =
-            rootHeight - frontCardStartMargin - frontCardBorderHeight - frontShadow
+            (rootHeight - frontCardStartMargin - frontCardBorderHeight - frontShadow).toFloat()
         middleCardLowerLimitSwitch = frontCardLowerLimitSwitch
 
         //initial setups for mainFragment
