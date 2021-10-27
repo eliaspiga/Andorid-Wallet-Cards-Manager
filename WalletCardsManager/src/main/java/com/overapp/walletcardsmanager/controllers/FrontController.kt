@@ -58,33 +58,47 @@ class FrontController(val scrollLayout: View, val topMargin: Float, val bottomMa
                 }
                 MotionEvent.ACTION_MOVE -> {
 
-                    val actualRawY : Float = event.rawY
-                    val deltaY : Float = actualRawY - lastReadedY
+                    val actualRawY: Float = event.rawY
+                    val deltaY: Float = actualRawY - lastReadedY
                     lastReadedY = actualRawY
-                    val positionResult : Float = scrollLayout.translationY + deltaY
+                    val positionResult: Float = scrollLayout.translationY + deltaY
 
-                    if (positionResult in topMargin..bottomMargin) {
+                    when {
+                        (positionResult in topMargin..bottomMargin) -> {
 
-                        Log.d("COORDINATES","Top Margin : $topMargin | Bottom Margin : $bottomMargin | " +
-                                "Position result : $positionResult | Raw Y : ${event.rawY} ${event.rawY.toInt()}")
+                            Log.d(
+                                "COORDINATES",
+                                "Top Margin : $topMargin | Bottom Margin : $bottomMargin | " +
+                                        "Position result : $positionResult | Raw Y : ${event.rawY} ${event.rawY.toInt()}"
+                            )
 
-                        direction = if (deltaY >= 0f) {
-                            //going down
+                            direction = if (deltaY >= 0f) {
+                                //going down
 
-                            //if I was going down call the opposite direction func
-                            if (direction == Direction.UP)
-                                CardsManager.onFrontCardOppositeDirectionToDown()
-                            CardsManager.onFrontCardDown(deltaY)
-                            Direction.DOWN
-                        } else {
-                            //going up
-                            CardsManager.onFrontCardUp(deltaY)
-                            Direction.UP
+                                //if I was going down call the opposite direction func
+                                if (direction == Direction.UP)
+                                    CardsManager.onFrontCardOppositeDirectionToDown()
+                                CardsManager.onFrontCardDown(deltaY)
+                                Direction.DOWN
+                            } else {
+                                //going up
+                                CardsManager.onFrontCardUp(deltaY)
+                                Direction.UP
+                            }
+
+                            scrollLayout.translationY += deltaY
+                            lastRootY = scrollLayout.translationY
+                            CardsManager.setFrontCardPosition(lastRootY)
                         }
 
-                        scrollLayout.translationY += deltaY
-                        lastRootY = scrollLayout.translationY
-                        CardsManager.setFrontCardPosition(lastRootY)
+                        positionResult.toInt() < topMargin -> {
+                            scrollLayout.translationY = topMargin
+                        }
+
+                        positionResult.toInt() > bottomMargin -> {
+                            scrollLayout.translationY = bottomMargin
+                        }
+
                     }
 
                     //setup velocity tracker

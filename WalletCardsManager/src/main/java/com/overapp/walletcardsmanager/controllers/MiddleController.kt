@@ -15,9 +15,9 @@ class MiddleController(val scrollLayout: View, val topMargin: Float, val bottomM
 
     //region drag variables
     private var initialY: Float = 0f
-    private var lastY:Float = 0f
-    private var lastCardY:Float = 0f
-    private var lastVelocity:Float = 0f
+    private var lastY: Float = 0f
+    private var lastCardY: Float = 0f
+    private var lastVelocity: Float = 0f
     private var direction = Direction.DOWN
 
     private var velocityTracker: VelocityTracker? = null
@@ -60,31 +60,41 @@ class MiddleController(val scrollLayout: View, val topMargin: Float, val bottomM
 
                 MotionEvent.ACTION_MOVE -> {
 
-                    val actualRawY : Float = event.rawY
-                    val deltaY : Float = actualRawY - lastY
+                    val actualRawY: Float = event.rawY
+                    val deltaY: Float = actualRawY - lastY
                     lastY = actualRawY
-                    val positionResult : Float = scrollLayout.translationY + deltaY
+                    val positionResult: Float = scrollLayout.translationY + deltaY
 
-                    if (positionResult in topMargin..bottomMargin) {
+                    when {
+                        (positionResult in topMargin..bottomMargin) -> {
 
-                        direction = if (deltaY >= 0f) {
-                            //going down
-                            CardsManager.onMiddleCardDown(deltaY)
-                            Direction.DOWN
-                        } else {
-                            //going up
+                            direction = if (deltaY >= 0f) {
+                                //going down
+                                CardsManager.onMiddleCardDown(deltaY)
+                                Direction.DOWN
+                            } else {
+                                //going up
 
-                            //if I was going down call the opposite direction func
-                            if (direction == Direction.DOWN)
-                                CardsManager.onMiddleCardDirectionRevertToUp()
+                                //if I was going down call the opposite direction func
+                                if (direction == Direction.DOWN)
+                                    CardsManager.onMiddleCardDirectionRevertToUp()
 
-                            CardsManager.onMiddleCardUp(deltaY)
-                            Direction.UP
+                                CardsManager.onMiddleCardUp(deltaY)
+                                Direction.UP
+                            }
+
+                            scrollLayout.translationY += deltaY
+                            lastCardY = scrollLayout.translationY
+                            CardsManager.setMiddleCardPosition(lastCardY)
                         }
 
-                        scrollLayout.translationY += deltaY
-                        lastCardY = scrollLayout.translationY
-                        CardsManager.setMiddleCardPosition(lastCardY)
+                        positionResult.toInt() < topMargin -> {
+                            scrollLayout.translationY = topMargin
+                        }
+
+                        positionResult.toInt() > bottomMargin -> {
+                            scrollLayout.translationY = bottomMargin
+                        }
                     }
 
                     //setup velocity tracker
@@ -166,5 +176,5 @@ class MiddleController(val scrollLayout: View, val topMargin: Float, val bottomM
         }
         va.start()
     }
-    //endregion
+//endregion
 }
